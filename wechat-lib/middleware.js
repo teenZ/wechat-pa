@@ -1,4 +1,4 @@
-// kao的函数必须是一个async function
+// koa的函数必须是一个async function
 const sha1 = require('sha1');
 const getRawBody = require('raw-body');
 const util = require('./util');

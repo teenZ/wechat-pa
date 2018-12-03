@@ -32,3 +32,24 @@ wechat-lib：和wechat api调用的相关的中间件
 3、把解析之后的内容拼装成一个xml格式的数据片段？？？？  
 4、把数据片段交给koa框架的ctx
 
+
+koa
+===
+“通过利用 async 函数，Koa 帮你丢弃回调函数，并有力地增强错误处理。 Koa 并没有捆绑任何中间件， 而是提供了一套优雅的方法，帮助您快速而愉快地编写服务端应用程序。”   
+emmm....
+
+### 1. 基础  
+```js
+const Koa = require('koa');
+
+// 创建一个Koa对象表示web app本身
+const app = new Koa(); 
+
+// 对于任何请求，Koa都将用异步函数处理
+app.use(async(ctx, next) => {
+
+});
+
+app.listen(3000);
+```
+`ctx`是由koa传入的封装了request和response的变量
