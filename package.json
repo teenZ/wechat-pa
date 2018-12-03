@@ -1,0 +1,25 @@
+{
+  "name": "wechat-pa",
+  "version": "1.0.0",
+  "description": "试一试公众号开发吧  \r 微信公众号分类：订阅号、服务号(多支付功能)、企业号",
+  "main": "check.js",
+  "scripts": {
+    "start": "node check.js",
+    "ngrok": "./bin/ngrok.sh",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/teenZ/wechat-pa.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/teenZ/wechat-pa/issues"
+  },
+  "homepage": "https://github.com/teenZ/wechat-pa#readme",
+  "dependencies": {
+    "koa": "^2.6.2",
+    "sha1": "^1.1.1"
+  }
+}
