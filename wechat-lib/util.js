@@ -14,7 +14,7 @@ const parseXML = xml => {
 const formatMessage = result => {
     let message = {};
     if (typeof result === 'object') {
-        const keys = object.keys(result);
+        const keys = Object.keys(result);
 
         for (let i = 0; i < keys.length; i++) {
             let item = result[keys[i]];

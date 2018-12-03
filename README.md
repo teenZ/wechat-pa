@@ -34,6 +34,7 @@ wechat-lib：和wechat api调用的相关的中间件
 4、把数据片段交给koa框架的ctx
 
 
+
 koa
 ===
 “通过利用 async 函数，Koa 帮你丢弃回调函数，并有力地增强错误处理。 Koa 并没有捆绑任何中间件， 而是提供了一套优雅的方法，帮助您快速而愉快地编写服务端应用程序。”   
@@ -58,7 +59,8 @@ app.use(async(ctx, next) => {
 app.listen(3000);
 ```
   * `ctx`是由koa传入的封装了request和response的变量  
-  * koa把很多async函数组成一个处理链，每个async函数都成为一个`middleware`，可以做一些自己的事情，然后通过`await next()`来调用下一个async函数
+  * `middleware`："中间件"（middleware），因为它处在 HTTP Request 和 HTTP Response 中间，用来实现某种中间功能。app.use()用来加载中间件。可以做一些自己的事情，然后通过`await next()`来调用下一个async函数。  
+  * koa把很多async函数组成一个处理链，每个async函数都成为一个中间件，Koa 所有的功能都是通过中间件实现的；多个中间件会形成一个栈结构（middle stack），以“先进后出”的顺序执行
 
 ### 2. `koa-router`,  `koa-bodyparser`
 通过`router.get('/path', async fn)`来注册一个GET请求。请求路径中的变量通过`ctx.params.name`访问  

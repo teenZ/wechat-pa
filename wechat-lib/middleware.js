@@ -5,21 +5,23 @@ const util = require('./util');
 
 module.exports = (config) => {
     return async(ctx, next) => {
-        console.log(ctx.query)
-        const {signature, timestamp, nonce, echostr} = ctx.query
-        const token = config.wechat.token
+        // console.log(ctx.query);
+        const {signature, timestamp, nonce, echostr} = ctx.query;
+        const token = config.token;
         let str = [token, timestamp, nonce].sort().join('')
-        const sha = sha1(str)
-        
+        const sha = sha1(str);
         if(ctx.method === 'GET'){
+            // console.log("get");
             if(sha === signature) {
                 ctx.body = echostr;
             }else{
-                ctx.body = 'wrong';
+                ctx.body = 'failed';
             }
         } else if (ctx.method === 'POST') {
+            // console.log("post")
             if(sha !== signature) {
-                return (ctx.body = 'fail');
+                console.log("what ??? not equal????")
+                return (ctx.body = 'failed');
             }
 
             // 接收数据包
@@ -29,31 +31,37 @@ module.exports = (config) => {
                 encoding: ctx.charset
             });
 
-            console.log(data);
+            // console.log(">>>>>>>>>>>>>>>");
+            // console.log(data);
             // 解析xml格式，回调方式解析
             const content = await util.parseXML(data);
+            // console.log("content: >>>>>>>>")
+            // console.log(content)
             const message = util.formatMessage(content.xml);
-
+            // console.log("message: >>>>>>>>>>>>>>>>>")
+            // console.log(message);
             ctx.status = 200;
-            ctx.type = 'application/xml';
-            ctx.body = `
-                <xml>
-                    <ToUserName>
-                        <![CDATA[${message.FromUserName}]]>
-                    /ToUserName>
-                    <FromUserName>
-                        <![CDATA[${message.ToUserName}]]>
-                    </FromUserName>
-                    <CreateTime>
-                        ${parseInt(new Date().getTime()/ 1000, 0)}
-                    </CreateTime>
-                    <MsgType>
-                        <![CDATA[text]]>
-                    </MsgType> 
-                    <Content>
-                        <![CDATA[${message.Content}]]>
-                    </Content>
-                </xml>`;
+            ctx.type = 'application/xml'; // 返回的格式
+            let xml = `<xml>
+                <ToUserName>
+                    <![CDATA[${message.FromUserName}]]>
+                /ToUserName>
+                <FromUserName> 
+                    <![CDATA[${message.ToUserName}]]>
+                </FromUserName>
+                <CreateTime>
+                    ${parseInt(new Date().getTime()/ 1000, 0) + ''}
+                </CreateTime>
+                <MsgType>
+                    <![CDATA[text]]>
+                </MsgType> 
+                <Content>
+                    <![CDATA[${message.Content}]]>
+                </Content>
+            </xml>`;
+            // console.log(xml);
+            ctx.body = `<xml><ToUserName><![CDATA[${message.FromUserName}]]></ToUserName><FromUserName><![CDATA[${message.ToUserName}]]></FromUserName><CreateTime>${parseInt(new Date().getTime()/ 1000, 0) + ''}</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA[${message.Content}]]></Content></xml>`;
+            console.log(ctx.body);
         }
         
     }
