@@ -33,7 +33,7 @@ wechat-lib：和wechat api调用的相关的中间件
 3、把解析之后的内容拼装成一个xml格式的数据片段？？？？  
 4、把数据片段交给koa框架的ctx
 
-
+access_token: 
 
 koa
 ===
@@ -85,8 +85,32 @@ router.post('/action1', async(ctx, next) => {
 app.use(bodyParser()); // 一定要先router注册到app上
 app.use(router.routes());
 ```
+1、将业务逻辑和模板拼装逻辑从中间件抽离开来
+2、接收消息和发送消息的流程
 
 ### 3.  
 ```js
+const config = {
+    wechat:{
+        appID: '------',
+        appSecret: '------',
+        token: 'getyourfingersoutofmypie'
+    }
+}
+const app = new Koa()
+app.use(async(ctx, next) => {
+    console.log(ctx.query)
+    const {signature, timestamp, nonce, echostr} = ctx.query // 四个参数
+    const token = config.wechat.token
+    let str = [token, timestamp, nonce].sort().join('')
+    const sha = sha1(str)
 
+    if(sha === signature) { // 本地校验
+        ctx.body = echostr
+    }else{
+        ctx.body = 'wrong'
+    }
+})
+
+app.listen(3008)
 ```
